@@ -13,19 +13,19 @@ function myFunction() {
 }
 loginBtn.addEventListener("click", async () => {
 
-    const response = await fetch(
-        "http://localhost:5000/login",
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                username: userInput.value,
-                password: userPassword.value
-            })
-        }
-    );
+const response = await fetch(
+    "https://quiz-fullstack-app-8hr6.onrender.com/login",
+    {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            username: userInput.value,
+            password: userPassword.value
+        })
+    }
+);
     const data = await response.json();
 
    if (data.success) {

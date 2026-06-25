@@ -6,7 +6,7 @@ const nextButton = document.getElementById("next-btn");
 async function loadQuestions() {
     try {
         const response =
-            await fetch("http://localhost:5000/questions");
+            await fetch("https://quiz-fullstack-app-8hr6.onrender.com/questions");
 
         questions = await response.json();
 
