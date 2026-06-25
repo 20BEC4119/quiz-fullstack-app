@@ -32,7 +32,7 @@ loginBtn.addEventListener("click", async () => {
 
     document.getElementById("error-message").textContent = "";
 
-    window.location.href = "./quiz/index.html";
+  window.location.href = "quiz/index.html";
 
 } else {
 
