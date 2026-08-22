@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 
 const express = require("express");
-const mysql = require("mysql2");
 const cors = require("cors");
 
 const User = require("./models/User");
@@ -27,30 +26,7 @@ mongoose.connect(process.env.MONGO_URI)
 
 
 // ======================================
-// MYSQL CONNECTION
-// KEEPING MYSQL FOR QUESTIONS FOR NOW
-// ======================================
-
-const db = mysql.createConnection({
-    host: process.env.MYSQLHOST,
-    port: process.env.MYSQLPORT,
-    user: process.env.MYSQLUSER,
-    password: process.env.MYSQL_ROOT_PASSWORD,
-    database: process.env.MYSQLDATABASE
-});
-
-db.connect((err) => {
-    if (err) {
-        console.log("MySQL connection error:", err);
-        return;
-    }
-
-    console.log("MySQL Connected");
-});
-
-
-// ======================================
-// LOGIN - USING MONGODB
+// LOGIN - MONGODB
 // ======================================
 
 app.post("/login", async (req, res) => {
@@ -90,25 +66,28 @@ app.post("/login", async (req, res) => {
 
 
 // ======================================
-// QUESTIONS - STILL USING MYSQL
+// TEST MONGODB USER
 // ======================================
 
-app.get("/questions", (req, res) => {
+app.get("/test-user", async (req, res) => {
 
-    db.query("SELECT * FROM questions", (err, result) => {
+    try {
 
-        if (err) {
+        const user = await User.create({
+            username: "testuser",
+            password: "1234"
+        });
 
-            console.log("Questions error:", err);
+        res.json(user);
 
-            return res.status(500).json({
-                error: err.message
-            });
-        }
+    } catch (err) {
 
-        res.json(result);
-    });
+        console.log(err);
 
+        res.status(500).json({
+            error: err.message
+        });
+    }
 });
 
 
@@ -118,6 +97,6 @@ app.get("/questions", (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server Running on Port ${PORT}`);
 });
